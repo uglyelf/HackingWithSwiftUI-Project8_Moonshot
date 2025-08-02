@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var showsGridView = true
+    @State private var isPopoverPresented = false
     
     let astronauts: [String: Astronaut] = Bundle.main.decode("astronauts.json")
     let missions: [Mission] = Bundle.main.decode("missions.json")
@@ -26,8 +27,16 @@ struct ContentView: View {
             .navigationTitle(Text("Moonshot"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Toggle("Show as Grid", isOn: $showsGridView)
-                        .toggleStyle(.switch)
+                    Image(systemName: "ellipsis.circle")
+                        .font(.title3)
+                        .onTapGesture {
+                            isPopoverPresented.toggle()
+                        }
+                        .popover(isPresented: $isPopoverPresented) {
+                            Toggle("Show as Grid", isOn: $showsGridView)
+                                .presentationCompactAdaptation((.popover))
+                                .preferredColorScheme(.dark)
+                        }
                 }
             }
         }

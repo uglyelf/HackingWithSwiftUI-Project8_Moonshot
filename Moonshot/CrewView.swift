@@ -24,7 +24,7 @@ struct CrewView: View {
                     RoundedRectangle(cornerRadius: 16)
                         .strokeBorder(.white, lineWidth: 1)
                 )
-//
+
             VStack(alignment: .leading) {
                 Text(crewMember.astronaut.name)
                     .foregroundStyle(.white)

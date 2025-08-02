@@ -8,11 +8,6 @@
 import SwiftUI
 
 struct MissionView: View {
-    struct CrewMember {
-        let role: String
-        let astronaut: Astronaut
-    }
-    
     let crew: [CrewMember]
     let mission: Mission
     
@@ -29,7 +24,7 @@ struct MissionView: View {
     }
     
     var body: some View {
-        ScrollView {
+        ScrollView() {
             VStack {
                 Image(mission.image)
                     .resizable()
@@ -38,30 +33,38 @@ struct MissionView: View {
                         width * 0.6
                     }
                     .padding(.top)
+                if mission.launchDate != nil {
+                    Text("Launched On: \(mission.formattedLaunchDate)")
+                        .font(.caption)
+                        .foregroundStyle(.white.opacity(0.5))
+                        .padding(.top)
+                }
                 
                 VStack(alignment: .leading) {
+                    HorizontalBar()
+                    
                     Text("Mission Highlights")
                         .font(.title.bold())
                         .padding(.bottom, 0.5)
                     
                     Text(mission.description)
-                        
+                    HorizontalBar()
+                    Text("Crew")
+                        .font(.title.bold())
+                        .padding(.bottom, 5)
                 }
                 .padding(.horizontal)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
-                        ForEach(crew, id.role) { crewMember in
+                        ForEach(crew, id: \.role) { crewMember in
                             NavigationLink {
-                                Text("Astronaut Details")
+                                AstronautView(astronaut: crewMember.astronaut)
                             } label: {
-                                HStack {
-                                    Image(crewMember.astronaut.id)
-                                } // HStack
-                                .padding(.horizontal)
-                            }
-                        }
-                    }
-                }
+                                CrewView(crewMember: crewMember)
+                            } // label for NavigationLink
+                        } // ForEach crew
+                    } // HStack
+                } // ScrollView
             } // VStack
             .padding(.bottom)
         } // ScrollView
@@ -75,6 +78,6 @@ struct MissionView: View {
     let missions: [Mission] = Bundle.main.decode("missions.json")
     let astronauts: [String: Astronaut] = Bundle.main.decode("astronauts.json")
     
-    return MissionView(mission: missions[0], astronauts: astronauts)
+    return MissionView(mission: missions[1], astronauts: astronauts)
         .preferredColorScheme(.dark)
 }

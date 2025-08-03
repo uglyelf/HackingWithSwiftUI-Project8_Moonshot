@@ -11,19 +11,12 @@ struct MissionsListView: View {
     let astronauts: [String: Astronaut]
     let missions: [Mission]
     
-    init(astronauts: [String : Astronaut], missions: [Mission]) {
-        self.astronauts = astronauts
-        self.missions = missions
-    }
-    
     var body: some View {
         
         List {
             ForEach(missions) { mission in
                 Section {
-                    NavigationLink {
-                        MissionView(mission: mission, astronauts: astronauts)
-                    } label: {
+                    NavigationLink(value: mission) {
                         HStack {
                             Image(mission.image)
                                 .resizable()
@@ -48,7 +41,7 @@ struct MissionsListView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.lightBackground)
                         )
-                    } // Label
+                    } // NavigationLink
                 }
                 .listRowBackground(Color.darkBackground)
             } // ForEach

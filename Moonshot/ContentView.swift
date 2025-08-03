@@ -10,12 +10,13 @@ import SwiftUI
 struct ContentView: View {
     @State private var showsGridView = true
     @State private var isPopoverPresented = false
+    @State private var navigationPath = NavigationPath()
     
     let astronauts: [String: Astronaut] = Bundle.main.decode("astronauts.json")
     let missions: [Mission] = Bundle.main.decode("missions.json")
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             Group {
                 if showsGridView {
                     MissionsGridView(astronauts: astronauts, missions: missions)
@@ -38,6 +39,12 @@ struct ContentView: View {
                                 .preferredColorScheme(.dark)
                         }
                 }
+            }
+            .navigationDestination(for: Mission.self) { mission in
+                MissionView(mission: mission, astronauts: astronauts)
+            }
+            .navigationDestination(for: Astronaut.self) { astronaut in
+                AstronautView(astronaut: astronaut)
             }
         }
     }

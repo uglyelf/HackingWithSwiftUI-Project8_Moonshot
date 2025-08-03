@@ -15,18 +15,11 @@ struct MissionsGridView: View {
         GridItem(.adaptive(minimum: 150))
     ]
     
-    init(astronauts: [String : Astronaut], missions: [Mission]) {
-        self.astronauts = astronauts
-        self.missions = missions
-    }
-    
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns) {
                 ForEach(missions) { mission in
-                    NavigationLink {
-                        MissionView(mission: mission, astronauts: astronauts)
-                    } label: {
+                    NavigationLink(value: mission) {
                         VStack {
                             Image(mission.image)
                                 .resizable()
@@ -51,7 +44,7 @@ struct MissionsGridView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.lightBackground)
                         )
-                    } // Label
+                    } // NavigationLink
                 } // ForEach
             } // LazyVGrid
             .padding([.horizontal, .bottom])

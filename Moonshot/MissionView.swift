@@ -57,9 +57,7 @@ struct MissionView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(crew, id: \.role) { crewMember in
-                            NavigationLink {
-                                AstronautView(astronaut: crewMember.astronaut)
-                            } label: {
+                            NavigationLink(value: crewMember.astronaut) {
                                 CrewView(crewMember: crewMember)
                             } // label for NavigationLink
                         } // ForEach crew
@@ -71,8 +69,18 @@ struct MissionView: View {
         .navigationTitle(mission.displayName)
         .navigationBarTitleDisplayMode(.inline)
         .background(.darkBackground)
-    } // View
+    } // body
 }
+
+/*
+ #Preview {
+     let astronauts: [String: Astronaut] = Bundle.main.decode("astronauts.json")
+     let path = NavigationPath()
+     
+     return AstronautView(astronaut: astronauts["aldrin"]!, navigationPath: .constant(path))
+         .preferredColorScheme(.dark)
+ }
+ */
 
 #Preview {
     let missions: [Mission] = Bundle.main.decode("missions.json")
